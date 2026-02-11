@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Light Mode: Warm Editorial (The New Yorker / Paper) */
+    --background: 40 20% 97%;  /* #F9F8F4 Warm Paper */
+    --foreground: 30 10% 16%;  /* #2D2A26 Warm Charcoal */
+    --muted: 40 10% 92%;       /* Slightly darker paper */
+    --muted-foreground: 30 5% 45%; /* Warm Gray */
+    --border: 30 5% 88%;       /* Soft separator */
+    --primary: 300 80% 60%;    /* #D946EF Magenta (Vintage Accent) */
+    --primary-foreground: 0 0% 100%;
+  }
+
+  .dark {
+    /* Dark Mode: Warm Ink (less pure-black, more readable) */
+    --background: 30 7% 9%;    /* #191715 Warm Ink */
+    --foreground: 40 15% 92%;  /* #EEECE8 Warm Off-white */
+    --muted: 30 7% 14%;        /* #262421 Elevated surface */
+    --muted-foreground: 35 8% 70%; /* #B9B4AC Warm gray text */
+    --border: 30 6% 22%;       /* #3B3835 Border/Divider */
+    --primary: 300 60% 70%;    /* Muted Magenta */
+    --primary-foreground: 0 0% 100%;
+  }
+
+  body {
+    /* Selection: Neutral ink wash (warm editorial) */
+    @apply bg-background text-foreground antialiased selection:bg-foreground/15 selection:text-foreground dark:selection:bg-foreground/20 dark:selection:text-background;
+    font-family: 'Geist Mono', monospace; 
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Newsreader Variable', serif; 
+    @apply font-semibold tracking-tight text-foreground;
+  }
+  
+  /* Link hover effect */
+  a:hover {
+    @apply text-foreground transition-colors;
+  }
+}

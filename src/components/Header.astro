@@ -1,0 +1,194 @@
+---
+import { LOGO_IMAGE, SITE } from "@/config";
+import Hr from "./Hr.astro";
+import LinkButton from "./LinkButton.astro";
+
+export interface Props {
+  activeNav?: "posts" | "tags" | "about" | "search";
+}
+
+const { activeNav } = Astro.props;
+
+const isActive = (path: string) => {
+  if (activeNav === "posts") return path === "posts";
+  if (activeNav === "tags") return path === "tags";
+  if (activeNav === "about") return path === "about";
+  if (activeNav === "search") return path === "search";
+  return false;
+};
+
+const base = "/journal";
+---
+
+<header>
+  <a id="skip-to-content" href="#main-content">Skip to content</a>
+  <div class="nav-container">
+    <div class="top-nav-wrap">
+      <a href={base} class="logo whitespace-nowrap">
+        {
+          LOGO_IMAGE.enable ? (
+            <img
+              src={`/assets/${LOGO_IMAGE.svg ? "logo.svg" : "logo.png"}`}
+              alt={SITE.title}
+              width={LOGO_IMAGE.width}
+              height={LOGO_IMAGE.height}
+            />
+          ) : (
+            SITE.title
+          )
+        }
+      </a>
+      <nav id="nav-menu">
+        <button
+          class="hamburger-menu focus-outline"
+          aria-label="Open Menu"
+          aria-expanded="false"
+          aria-controls="menu-items"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="menu-icon"
+          >
+            <line x1="7" y1="12" x2="21" y2="12" class="line"></line>
+            <line x1="3" y1="6" x2="21" y2="6" class="line"></line>
+            <line x1="12" y1="18" x2="21" y2="18" class="line"></line>
+            <line x1="18" y1="6" x2="6" y2="18" class="close"></line>
+            <line x1="6" y1="6" x2="18" y2="18" class="close"></line>
+          </svg>
+        </button>
+        <ul id="menu-items" class="display-none sm:flex">
+          <li>
+            <a href={`${base}/posts/`} class:list={{ "active-nav": isActive("posts") }}>
+              Posts
+            </a>
+          </li>
+          <li>
+            <a href={`${base}/tags/`} class:list={{ "active-nav": isActive("tags") }}>
+              Tags
+            </a>
+          </li>
+          <li>
+            <a href={`${base}/about/`} class:list={{ "active-nav": isActive("about") }}>
+              About
+            </a>
+          </li>
+          <li>
+            <LinkButton
+              href={`${base}/search/`}
+              class:list={{ "active-nav": isActive("search") }}
+              aria-label="search"
+              title="Search"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="scale-125 hover:rotate-12"
+              >
+                <path
+                  d="M19.023 16.977a35.13 35.13 0 0 1-1.367-1.384c-.372-.378-.596-.653-.596-.653l-2.8-1.337A6.962 6.962 0 0 0 16 9c0-3.859-3.14-7-7-7S2 5.141 2 9s3.14 7 7 7c1.763 0 3.37-.66 4.603-1.739l1.337 2.8s.275.224.653.596c.387.363.896.854 1.384 1.367l1.358 1.392.604.646 2.121-2.121-.646-.604c-.379-.372-.885-.866-1.391-1.36zM9 14c-2.757 0-5-2.243-5-5s2.243-5 5-5 5 2.243 5 5-2.243 5-5 5z"
+                ></path>
+              </svg>
+              <span class="sr-only">Search</span>
+            </LinkButton>
+          </li>
+          <li>
+            <LinkButton
+              href={`${base}/archives/`}
+              class:list={{ "active-nav": isActive("search") }}
+              aria-label="archives"
+              title="Archives"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="scale-125 hover:rotate-12"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                <path
+                  d="M3 4m0 2a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-14a2 2 0 0 1 -2 -2z"
+                ></path>
+                <path
+                  d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-10"></path>
+                <path d="M10 12l4 0"></path>
+              </svg>
+              <span class="sr-only">Archives</span>
+            </LinkButton>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+  <Hr />
+</header>
+
+<style>
+  #skip-to-content {
+    @apply absolute -top-full left-16 z-50 bg-skin-accent px-3 py-2 text-skin-inverted transition-all focus:top-4;
+  }
+  .nav-container {
+    @apply mx-auto flex max-w-3xl flex-col items-center justify-between sm:flex-row;
+  }
+  .top-nav-wrap {
+    @apply relative flex w-full items-start justify-between p-4 sm:items-center sm:py-8;
+  }
+  .logo {
+    @apply absolute py-1 text-xl font-semibold sm:static sm:text-2xl;
+  }
+  .hamburger-menu {
+    @apply self-end p-2 sm:hidden;
+  }
+  .menu-icon {
+    @apply h-6 w-6 scale-125;
+  }
+  .menu-icon line {
+    @apply transition-opacity duration-75 ease-in-out;
+  }
+  .menu-icon .close {
+    opacity: 0;
+  }
+  .menu-icon.is-active .line {
+    @apply opacity-0;
+  }
+  .menu-icon.is-active .close {
+    @apply opacity-100;
+  }
+</style>
+
+<script>
+  function toggleNav() {
+    // Toggle menu
+    const menuBtn = document.querySelector(".hamburger-menu");
+    const menuIcon = document.querySelector(".menu-icon");
+    const menuItems = document.querySelector("#menu-items");
+
+    menuBtn?.addEventListener("click", () => {
+      const menuExpanded = menuBtn.getAttribute("aria-expanded") === "true";
+      menuIcon?.classList.toggle("is-active");
+      menuBtn.setAttribute("aria-expanded", menuExpanded ? "false" : "true");
+      menuBtn.setAttribute(
+        "aria-label",
+        menuExpanded ? "Open Menu" : "Close Menu"
+      );
+      menuItems?.classList.toggle("display-none");
+    });
+  }
+
+  toggleNav();
+
+  // Runs on view transitions navigation
+  document.addEventListener("astro:after-swap", toggleNav);
+</script>

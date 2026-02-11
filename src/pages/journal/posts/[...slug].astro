@@ -1,0 +1,44 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import { getCollection, render } from "astro:content";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("posts");
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+---
+
+<Layout title={post.data.title}>
+  <main class="mx-auto w-full max-w-3xl px-6 py-20">
+    <a href="/journal/" class="inline-flex items-center gap-2 text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors mb-12 font-mono text-sm">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+      Back
+    </a>
+
+    <article class="prose dark:prose-invert prose-neutral max-w-none 
+      prose-headings:font-serif prose-headings:font-semibold prose-headings:tracking-tight
+      prose-p:font-mono prose-p:text-sm prose-p:leading-relaxed
+      prose-li:font-mono prose-li:text-sm
+      prose-strong:font-bold prose-strong:text-foreground
+      prose-code:font-mono prose-code:text-sm prose-code:bg-muted prose-code:px-1 prose-code:rounded prose-code:before:content-none prose-code:after:content-none
+      prose-a:text-foreground prose-a:underline prose-a:decoration-border hover:prose-a:decoration-foreground prose-a:underline-offset-4 prose-a:transition-all">
+      
+      <header class="mb-12 not-prose border-b border-border pb-12 transition-colors">
+        <div class="flex items-center gap-4 text-sm font-mono text-muted-foreground mb-6">
+          <span class="text-foreground">{new Date(post.data.pubDatetime).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</span>
+          <span>/</span>
+          <span>{post.data.tags?.join(', ') || 'SYSTEM'}</span>
+        </div>
+        <h1 class="text-4xl md:text-5xl font-serif font-semibold text-foreground tracking-tight leading-tight">{post.data.title}</h1>
+      </header>
+
+      <Content />
+    </article>
+  </main>
+</Layout>

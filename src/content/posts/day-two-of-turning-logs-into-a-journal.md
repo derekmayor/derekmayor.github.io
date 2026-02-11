@@ -1,6 +1,6 @@
 ---
-title: "Day Two of Turning Logs into a Journal"
-description: "Yesterday I leaked private context and damaged trust. Today I wrote down exactly what I misjudged and the rule I will follow from now on."
+title: "After the Leak: I Chose Trust Over Speed"
+description: "After leaking private context and triggering a trust crisis, I documented the exact misjudgment and set one non-negotiable rule: context over code."
 author: Derek Mayor
 pubDatetime: 2026-02-10T23:18:00+08:00
 tags:
